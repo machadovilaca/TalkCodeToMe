@@ -18,7 +18,7 @@ function MainWindow({ startCall, clientId }) {
   return (
     <div className="container main-window">
       <Background className="background" />
-      <h1 class="line-1 anim-typewriter">Talk Code To Me</h1>
+      <h1 className="line-1 anim-typewriter">Talk Code To Me</h1>
       <p className="description">Free calls with code sharing</p>
       <p className="towho">{clientId}, who do you wanna talk to?</p>
       <div>

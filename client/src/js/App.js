@@ -111,6 +111,7 @@ class App extends Component {
             writeFile={this.writeFile}
             writeCanvas={this.writeCanvas}
             socket={socket}
+            clientId={clientId}
           />
         )}
         <CallModal

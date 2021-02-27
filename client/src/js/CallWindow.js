@@ -5,7 +5,18 @@ import CodeEditor from './CodeEditor/CodeEditor';
 
 const getButtonClass = (icon, enabled) => classnames(`btn-action fa ${icon}`, { disable: !enabled });
 
-function CallWindow({ peerSrc, localSrc, config, mediaDevice, status, endCall, writeFile, writeCanvas, socket }) {
+function CallWindow({
+  peerSrc,
+  localSrc,
+  config,
+  mediaDevice,
+  status,
+  endCall,
+  writeFile,
+  writeCanvas,
+  socket,
+  clientId
+}) {
   const peerVideo = useRef(null);
   const localVideo = useRef(null);
   const [video, setVideo] = useState(config.video);
@@ -18,8 +29,8 @@ function CallWindow({ peerSrc, localSrc, config, mediaDevice, status, endCall, w
 
   useEffect(() => {
     if (mediaDevice) {
-      mediaDevice.toggle('Video', video);
-      mediaDevice.toggle('Audio', audio);
+      mediaDevice.toggle("Video", video);
+      mediaDevice.toggle("Audio", audio);
     }
   });
 
@@ -28,27 +39,32 @@ function CallWindow({ peerSrc, localSrc, config, mediaDevice, status, endCall, w
    * @param {String} deviceType - Type of the device eg: Video, Audio
    */
   const toggleMediaDevice = (deviceType) => {
-    if (deviceType === 'video') {
+    if (deviceType === "video") {
       setVideo(!video);
-      mediaDevice.toggle('Video');
+      mediaDevice.toggle("Video");
     }
-    if (deviceType === 'audio') {
+    if (deviceType === "audio") {
       setAudio(!audio);
-      mediaDevice.toggle('Audio');
+      mediaDevice.toggle("Audio");
     }
   };
 
   const inputChange = (data) => {
     writeFile(data);
-  }
+  };
 
   const canvasInputChange = (data) => {
     writeCanvas(data);
-  }
+  };
 
   return (
     <div className={classnames("call-window", status)}>
-      <CodeEditor socket={socket} inputchange={inputChange} canvasinputchange={canvasInputChange}/>
+      <CodeEditor
+        socket={socket}
+        inputchange={inputChange}
+        canvasinputchange={canvasInputChange}
+        clientId={clientId}
+      />
       <video id="peerVideo" ref={peerVideo} autoPlay />
       <video id="localVideo" ref={localVideo} autoPlay muted />
       <div className="video-control">
