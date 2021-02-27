@@ -10,13 +10,15 @@ import CanvasDraw from "react-canvas-draw"
 class CodeEditor extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { code: "", name: "" , socket: props.socket, filename: "", blob: null, canvas: ""};
+    this.state = { code: "", name: "" , socket: props.socket, filename: "", blob: null, canvas: "", internalUpdate: false};
 
     this.inputchange = this.props.inputchange.bind(this)
     this.canvasinputchange = this.props.canvasinputchange.bind(this)
 
     this.openFile = this.openFile.bind(this)
     this.updateCanvas = this.updateCanvas.bind(this)
+
+    this.canvasRef = React.createRef();
   }
 
   componentDidMount(){
@@ -26,8 +28,11 @@ class CodeEditor extends React.Component {
       })
       .on("canvas", (data) => {
         this.setState({
-          canvas: data.data
+          canvas: data.data,
+          internalUpdate: true
         })
+        console.log("reloading canvas")
+        this.canvasRef.current.loadSaveData(data.data, true);
       })
   }
 
@@ -67,15 +72,18 @@ class CodeEditor extends React.Component {
   }
 
   updateCanvas(canvas) {
-    this.setState({
-      canvas: canvas.getSaveData()
-    })
-    this.canvasinputchange(canvas.getSaveData())
-  }
-
-  loadCanvas(event) {
-    console.log("reloading canvas")
-    event.loadSaveData(this.state.canvas, true)
+    if (!this.state.internalUpdate) {
+      this.setState({
+        canvas: canvas.getSaveData()
+      })
+      this.canvasinputchange(canvas.getSaveData())
+      console.log("help",this.canvasRef.current)  
+    }
+    else {
+      this.setState({
+        internalUpdate: false
+      })
+    }
   }
 
   render() {
@@ -86,13 +94,13 @@ class CodeEditor extends React.Component {
           {this.state.blob ? <button onClick={(e) => this.saveFile(e)}>Save</button> : "" }
         </div>
         <div>
-          <CanvasDraw gridColor="rgba(255,255,255,0)"
-            onLoad={(event) => (this.loadCanvas(event))}
+        <CanvasDraw gridColor="rgba(255,255,255,0)"  ref={this.canvasRef}
             onChange={this.updateCanvas}
             hideGrid={true} 
             canvasWidth={400} 
             canvasHeight={400} 
-            brushRadius={2} />
+            brushRadius={2} 
+        />
         </div>
         <div>
           <Editor
