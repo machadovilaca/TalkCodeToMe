@@ -7,16 +7,6 @@ $icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
 @import "variables";
 @import "shared/base";
 
-html {
-  background: url("https://source.unsplash.com/2560x1440/?forest,mountain") center no-repeat fixed;
-}
-
-body {
-  background: rgba(#000000, 0.6);
-  padding: 0px 20px 20px 20px;
-  min-height: 100vh;
-}
-
 .navbar-brand {
   font-size: 1.5em;
   img {
@@ -44,3 +34,17 @@ body {
 @import "main-window";
 @import "call-window";
 @import "call-modal";
+
+#root {
+  height: 100vh;
+}
+
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}

@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import Background from "./Background";
+import { Button, Checkbox, Form } from "semantic-ui-react";
 
 function MainWindow({ startCall, clientId }) {
   const [friendID, setFriendID] = useState(null);
@@ -15,37 +17,35 @@ function MainWindow({ startCall, clientId }) {
 
   return (
     <div className="container main-window">
+      <Background className="background" />
+      <h1 class="line-1 anim-typewriter">Talk Code To Me</h1>
+      <p className="description">Free calls with code sharing</p>
+      <p className="towho">{clientId}, who do you wanna talk to?</p>
       <div>
-        <h3>
-          Hi, your ID is
-          <input
-            type="text"
-            className="txt-clientId"
-            defaultValue={clientId}
-            readOnly
-          />
-        </h3>
-        <h4>Get started by calling a friend below</h4>
-      </div>
-      <div>
-        <input
-          type="text"
-          className="txt-clientId"
-          spellCheck={false}
-          placeholder="Your friend ID"
-          onChange={(event) => setFriendID(event.target.value)}
-        />
-        <div>
-          <button
-            type="button"
-            className="btn-action fa fa-video-camera"
-            onClick={callWithVideo(true)}
-          />
-          <button
-            type="button"
-            className="btn-action fa fa-phone"
-            onClick={callWithVideo(false)}
-          />
+        <div className="ui middle aligned center aligned grid">
+          <Form className="ui big form">
+            <Form.Field>
+              <input
+                type="text"
+                className="txt-clientId"
+                spellCheck={false}
+                placeholder="Your friend ID"
+                onChange={(event) => setFriendID(event.target.value)}
+              />
+            </Form.Field>
+            <div className="icons">
+              <button
+                type="button"
+                className="btn-action fa fa-video-camera"
+                onClick={callWithVideo(true)}
+              />
+              <button
+                type="button"
+                className="btn-action fa fa-phone"
+                onClick={callWithVideo(false)}
+              />
+            </div>
+          </Form>
         </div>
       </div>
     </div>
@@ -54,7 +54,7 @@ function MainWindow({ startCall, clientId }) {
 
 MainWindow.propTypes = {
   clientId: PropTypes.string.isRequired,
-  startCall: PropTypes.func.isRequired
+  startCall: PropTypes.func.isRequired,
 };
 
 export default MainWindow;

@@ -5,6 +5,7 @@ import PeerConnection from './PeerConnection';
 import MainWindow from './MainWindow';
 import CallWindow from './CallWindow';
 import CallModal from './CallModal';
+import 'semantic-ui-css/semantic.min.css'
 
 class App extends Component {
   constructor() {
@@ -97,9 +98,8 @@ class App extends Component {
       peerSrc,
     } = this.state;
     return (
-      <div>
         <MainWindow clientId={clientId} startCall={this.startCallHandler} />
-        {!_.isEmpty(this.config) && (
+        /*{!_.isEmpty(this.config) && (
           <CallWindow
             status={callWindow}
             localSrc={localSrc}
@@ -116,8 +116,7 @@ class App extends Component {
           startCall={this.startCallHandler}
           rejectCall={this.rejectCallHandler}
           callFrom={callFrom}
-        />
-      </div>
+        />*/
     );
   }
 }

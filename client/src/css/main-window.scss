@@ -1,48 +1,115 @@
 .main-window {
-	padding-top: 80px;
-	font-size: 1.75em;
+  padding-top: 80px;
+  font-size: 1.75em;
 
-	@media screen and (max-width: 767px) {
-		padding-top: 40px;
+  @media screen and (max-width: 767px) {
+    padding-top: 40px;
 
-		.pull-left, .pull-right {
-			width: 100%;
-			text-align: center;
-		}
+    .pull-left,
+    .pull-right {
+      width: 100%;
+      text-align: center;
+    }
 
-		.pull-right {
-			margin-top: 20px;
-		}
-	}
+    .pull-right {
+      margin-top: 20px;
+    }
+  }
 
-	.btn-action {
-		$height: 60px;
-		height: $height;
-		width: $height;
-		margin: 20px 30px 0px 0px;
-		line-height: $height;
-		text-align: center;
-		border-radius: 50%;
-		border: solid 2px $main-color;
-		cursor: pointer;
-		transition-duration: 0.25s;
-		background-color: transparent;
+  #tsparticles {
+    position: absolute;
+    z-index: -1;
+    height: 100vh;
+    width: 100vw;
+  }
 
-		&:hover {
-			background-color: rgba($main-color, 0.2);
-		}
-	}
+  .line-1 {
+    position: relative;
+    width: 24em;
+    margin: 0 auto;
+    border-right: 2px solid rgba(255, 255, 255, 0.75);
+    font-size: 180%;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    transform: translateY(-30%);
+    font-size: 90px;
+    color: #ffffff;
+  }
 
-	.txt-clientId {
-		height: 40px;
-		margin: 40px auto 0px 10px;
-		color: $main-color;
-		font-size: 0.9em;
-		background-color: transparent;
-		border: none;
-		border-bottom: solid 1px $main-color;
-		@include input-placeholder(rgba($main-color, 0.8));
-	}
+  p {
+    margin: 0 0 1em;
+    line-height: 1.4285em;
+    margin: 0 0 1em;
+    font-size: 30px;
+    font-weight: 900;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: normal;
+    color: #e0e1e2;
+    line-height: 1.4285em;
+  }
 
+  .anim-typewriter {
+    animation: typewriter 4s steps(30) 1s 1 normal both,
+      blinkTextCursor 500ms steps(44) infinite normal;
+  }
+  @keyframes typewriter {
+    from {
+      width: 0;
+    }
+    to {
+      width: 8em;
+    }
+  }
+  @keyframes blinkTextCursor {
+    from {
+      border-right-color: rgba(255, 255, 255, 0.75);
+    }
+    to {
+      border-right-color: transparent;
+    }
+  }
+
+  .ui.big.form {
+    width: 350px !important;
+  }
+
+  .towho {
+    font-size: 22px;
+  }
+
+  .btn-action {
+    $height: 60px;
+    height: $height;
+    width: $height;
+    margin: 20px 30px 0px 0px;
+    line-height: $height;
+    text-align: center;
+    border-radius: 50%;
+    border: solid 2px $main-color;
+    cursor: pointer;
+    transition-duration: 0.25s;
+    background-color: transparent;
+
+    &:hover {
+      background-color: rgba($main-color, 0.2);
+    }
+  }
+
+  .txt-clientId {
+    height: 40px;
+    margin: 40px auto 0px 10px;
+    color: $main-color;
+    font-size: 0.9em;
+    background-color: transparent;
+    border: none;
+    border-bottom: solid 1px $main-color;
+    @include input-placeholder(rgba($main-color, 0.8));
+  }
+
+  .icons {
+    text-align: center;
+  }
 }
-
