@@ -12,7 +12,7 @@ function CallModal({ status, callFrom, startCall, rejectCall }) {
   return (
     <div className={classnames('call-modal', status)}>
       <p>
-        <span className="caller">{`${callFrom} is calling`}</span>
+        <span className="caller">{`${callFrom} is calling...`}</span>
       </p>
       <button
         type="button"
