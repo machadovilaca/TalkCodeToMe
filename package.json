@@ -1,7 +1,7 @@
 {
-  "name": "react-videocall",
+  "name": "react-videocall-text-edit",
   "version": "1.1.0",
-  "description": "React VideoCall App",
+  "description": "videocall text edit",
   "scripts": {
     "build": "cd client && webpack --config webpack-prod.config.js",
     "start": "node server/index.js",
@@ -33,6 +33,7 @@
     "react": "17.0.1",
     "react-canvas-draw": "^1.1.1",
     "react-dom": "17.0.1",
+    "react-grid-layout": "^1.2.0",
     "react-simple-code-editor": "^0.11.0",
     "react-tsparticles": "^1.18.12",
     "sass-loader": "10.0.4",
@@ -56,11 +57,5 @@
     "eslint-plugin-react": "7.21.5",
     "nodemon": "2.0.6",
     "webpack-dev-server": "3.11.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/nguymin4/react-videocall.git"
-  },
-  "author": "Minh Son Nguyen",
-  "license": "MIT"
+  }
 }

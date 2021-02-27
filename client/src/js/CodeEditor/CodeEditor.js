@@ -11,6 +11,7 @@ function CodeEditor(props) {
   const [code, setCode] = useState("");
   const socket = props.socket;
   const [blob, setBlob] = useState(null);
+  const [useCanvas, setUseCanvas] = useState(true);
   const clientId = props.clientId;
   const canvasRef = useRef(null);
   const [canvasData, setCanvasData] = useState({
@@ -77,43 +78,61 @@ function CodeEditor(props) {
     }
   };
 
+  const changeTop = () => {
+    setUseCanvas(!useCanvas);
+  };
+
   return (
     <div>
-      <div>
+      <div className="buttons">
         <button type="file" onClick={openFile}>
           Edit file
         </button>
         {blob ? (
-          <div>
+          <>
             <button onClick={(e) => saveFile(e)}>Save</button>
             <button onClick={(e) => closeFile()}>Close</button>
-          </div>
+          </>
+        ) : (
+          ""
+        )}
+        {code ? (
+          <button onClick={(e) => changeTop()}>
+            {useCanvas ? "Use code" : "Use canvas"}
+          </button>
         ) : (
           ""
         )}
       </div>
-      <div>
-        <CanvasDraw
-          gridColor="rgba(255,255,255,0)"
-          ref={canvasRef}
-          onChange={updateCanvas}
-          hideGrid={true}
-          canvasWidth={400}
-          canvasHeight={400}
-          brushRadius={2}
-        />
-      </div>
-      <div className="draw-canvas">
-        <Editor
-          value={code}
-          onValueChange={(code) => updateEditor(code)}
-          highlight={(code) => highlight(code, languages.js)}
-          padding={10}
-          style={{
-            fontFamily: '"Fira code", "Fira Mono", monospace',
-            fontSize: 12,
-          }}
-        />
+      <div className="iteractive">
+        {code ? (
+          <div className={"canvas" + (useCanvas ? " top" : "")}>
+            <CanvasDraw
+              gridColor="none"
+              backgroundColor="none"
+              ref={canvasRef}
+              onChange={updateCanvas}
+              hideGrid={true}
+              canvasWidth={1200}
+              canvasHeight={600}
+              brushRadius={2}
+            />
+          </div>
+        ) : (
+          ""
+        )}
+        <div className={"editor" + (useCanvas ? "" : " top")}>
+          <Editor
+            value={code}
+            onValueChange={(code) => updateEditor(code)}
+            highlight={(code) => highlight(code, languages.js)}
+            padding={10}
+            style={{
+              fontFamily: '"Fira code", "Fira Mono", monospace',
+              fontSize: 16,
+            }}
+          />
+        </div>
       </div>
     </div>
   );

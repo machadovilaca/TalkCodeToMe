@@ -17,6 +17,7 @@ class App extends Component {
       callFrom: "",
       localSrc: null,
       peerSrc: null,
+      code: "",
     };
     this.friendID = null;
     this.pc = {};
@@ -98,9 +99,8 @@ class App extends Component {
       peerSrc,
     } = this.state;
     return (
-      <div className="main-container">
-        <MainWindow clientId={clientId} startCall={this.startCallHandler} />
-        {!_.isEmpty(this.config) && (
+      <div>
+        {!_.isEmpty(this.config) ? (
           <CallWindow
             status={callWindow}
             localSrc={localSrc}
@@ -113,13 +113,17 @@ class App extends Component {
             socket={socket}
             clientId={clientId}
           />
+        ) : (
+          <>
+            <MainWindow clientId={clientId} startCall={this.startCallHandler} />
+            <CallModal
+              status={callModal}
+              startCall={this.startCallHandler}
+              rejectCall={this.rejectCallHandler}
+              callFrom={callFrom}
+            />
+          </>
         )}
-        <CallModal
-          status={callModal}
-          startCall={this.startCallHandler}
-          rejectCall={this.rejectCallHandler}
-          callFrom={callFrom}
-        />
       </div>
     );
   }

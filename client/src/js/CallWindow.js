@@ -1,21 +1,22 @@
-import React, { useState, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import CodeEditor from './CodeEditor/CodeEditor';
+import React, { useState, useEffect, useRef } from "react";
+import PropTypes from "prop-types";
+import classnames from "classnames";
+import CodeEditor from "./CodeEditor/CodeEditor";
+import GridLayout from "react-grid-layout";
 
-const getButtonClass = (icon, enabled) => classnames(`btn-action fa ${icon}`, { disable: !enabled });
+import "react-grid-layout/css/styles.css";
+import "react-resizable/css/styles.css";
 
 function CallWindow({
   peerSrc,
   localSrc,
   config,
   mediaDevice,
-  status,
   endCall,
   writeFile,
   writeCanvas,
   socket,
-  clientId
+  clientId,
 }) {
   const peerVideo = useRef(null);
   const localVideo = useRef(null);
@@ -57,36 +58,61 @@ function CallWindow({
     writeCanvas(data);
   };
 
+  const layout = [
+    { i: "localVideo", x: 2, y: 6, w: 2, h: 4 },
+    { i: "video-controller", x: 5, y: 15, w: 2, h: 4 },
+    { i: "peerVideo", x: 8, y: 6, w: 2, h: 4 },
+    { i: "code", x: 0, y: 0, w: 11, h: 20, static: true },
+  ];
+
+  const getButtonClass = (icon, enabled) => {
+    return classnames(`btn-action fa ${icon}`, { disable: !enabled });
+  };
+
   return (
-    <div className={classnames("call-window", status)}>
-      <CodeEditor
-        socket={socket}
-        inputchange={inputChange}
-        canvasinputchange={canvasInputChange}
-        clientId={clientId}
-      />
-      <video id="peerVideo" ref={peerVideo} autoPlay />
-      <video id="localVideo" ref={localVideo} autoPlay muted />
-      <div className="video-control">
-        <button
-          key="btnVideo"
-          type="button"
-          className={getButtonClass("fa-video-camera", video)}
-          onClick={() => toggleMediaDevice("video")}
-        />
-        <button
-          key="btnAudio"
-          type="button"
-          className={getButtonClass("fa-microphone", audio)}
-          onClick={() => toggleMediaDevice("audio")}
-        />
-        <button
-          type="button"
-          className="btn-action hangup fa fa-phone"
-          onClick={() => endCall(true)}
+    <GridLayout
+      className="layout"
+      layout={layout}
+      cols={12}
+      rowHeight={30}
+      width={window.innerWidth - 10}
+    >
+      <div key="code">
+        <CodeEditor
+          socket={socket}
+          inputchange={inputChange}
+          canvasinputchange={canvasInputChange}
+          clientId={clientId}
         />
       </div>
-    </div>
+      <div key="peerVideo">
+        <video className="peerVideo" ref={peerVideo} autoPlay />
+      </div>
+      <div key="localVideo">
+        <video className="localVideo" ref={localVideo} autoPlay muted />
+      </div>
+      <div key="video-controller">
+        <div className="video-control">
+          <button
+            key="btnVideo"
+            type="button"
+            className={getButtonClass("fa-video-camera", video)}
+            onClick={() => toggleMediaDevice("video")}
+          />
+          <button
+            key="btnAudio"
+            type="button"
+            className={getButtonClass("fa-microphone", audio)}
+            onClick={() => toggleMediaDevice("audio")}
+          />
+          <button
+            type="button"
+            className="btn-action hangup fa fa-phone"
+            onClick={() => endCall(true)}
+          />
+        </div>
+      </div>
+    </GridLayout>
   );
 }
 
@@ -96,10 +122,10 @@ CallWindow.propTypes = {
   peerSrc: PropTypes.object, // eslint-disable-line
   config: PropTypes.shape({
     audio: PropTypes.bool.isRequired,
-    video: PropTypes.bool.isRequired
+    video: PropTypes.bool.isRequired,
   }).isRequired,
   mediaDevice: PropTypes.object, // eslint-disable-line
-  endCall: PropTypes.func.isRequired
+  endCall: PropTypes.func.isRequired,
 };
 
 export default CallWindow;
