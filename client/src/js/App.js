@@ -98,7 +98,7 @@ class App extends Component {
       peerSrc,
     } = this.state;
     return (
-      <div>
+      <div className="main-container">
         <MainWindow clientId={clientId} startCall={this.startCallHandler} />
         {!_.isEmpty(this.config) && (
           <CallWindow
