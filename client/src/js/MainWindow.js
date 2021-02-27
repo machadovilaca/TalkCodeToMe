@@ -20,7 +20,17 @@ function MainWindow({ startCall, clientId }) {
       <Background className="background" />
       <h1 className="line-1 anim-typewriter">Talk Code To Me</h1>
       <p className="description">Free calls with code sharing</p>
-      <p className="towho">{clientId}, who do you wanna talk to?</p>
+      <div className="userid">
+        <button
+          className="compact ui button copy"
+          onClick={() => navigator.clipboard.writeText(clientId)}
+        >
+          Copy
+        </button>
+        <p className="towho">
+          <span className="id">{clientId}</span>, who do you wanna talk to?
+        </p>
+      </div>
       <div>
         <div className="ui middle aligned center aligned grid">
           <Form className="ui big form">
