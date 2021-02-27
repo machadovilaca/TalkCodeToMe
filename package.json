@@ -16,6 +16,7 @@
     "babel-loader": "8.1.0",
     "bluebird": "3.7.2",
     "bootstrap-sass": "3.4.1",
+    "browser-fs-access": "^0.14.0",
     "classnames": "2.2.6",
     "css-loader": "5.0.0",
     "expose-loader": "1.0.1",

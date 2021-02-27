@@ -44,13 +44,6 @@ function CallWindow({ peerSrc, localSrc, config, mediaDevice, status, endCall, w
 
   return (
     <div className={classnames("call-window", status)}>
-      {/* <input
-        style={{ color: "black" }}
-        type="text"
-        name="name"
-        value={code}
-        onChange={inputChange}
-      /> */}
       <CodeEditor socket={socket} inputchange={inputChange}/>
       <video id="peerVideo" ref={peerVideo} autoPlay />
       <video id="localVideo" ref={localVideo} autoPlay muted />

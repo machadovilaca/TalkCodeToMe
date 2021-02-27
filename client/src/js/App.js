@@ -36,9 +36,6 @@ class App extends Component {
       .on("request", ({ from: callFrom }) => {
         this.setState({ callModal: "active", callFrom });
       })
-      //.on("file", (data) => {
-      //  this.setState({ code: data.data });
-      //})
       .on("call", (data) => {
         if (data.sdp) {
           this.pc.setRemoteDescription(data.sdp);
@@ -64,7 +61,6 @@ class App extends Component {
 
   writeFile(data) {
     socket.emit("file", { to: this.friendID, data });
-    //this.setState({ code: data });
   }
 
   rejectCall() {
