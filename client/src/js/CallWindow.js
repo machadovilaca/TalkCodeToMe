@@ -5,7 +5,7 @@ import CodeEditor from './CodeEditor/CodeEditor';
 
 const getButtonClass = (icon, enabled) => classnames(`btn-action fa ${icon}`, { disable: !enabled });
 
-function CallWindow({ peerSrc, localSrc, config, mediaDevice, status, endCall }) {
+function CallWindow({ peerSrc, localSrc, config, mediaDevice, status, endCall, writeFile, code }) {
   const peerVideo = useRef(null);
   const localVideo = useRef(null);
   const [video, setVideo] = useState(config.video);
@@ -38,23 +38,34 @@ function CallWindow({ peerSrc, localSrc, config, mediaDevice, status, endCall })
     }
   };
 
+  const inputChange = (event) => {
+    writeFile(event.target.value);
+  }
+
   return (
-    <div className={classnames('call-window', status)}>
-      <CodeEditor />
+    <div className={classnames("call-window", status)}>
+      <input
+        style={{ color: "black" }}
+        type="text"
+        name="name"
+        value={code}
+        onChange={inputChange}
+      />
+      <CodeEditor code={code} />
       <video id="peerVideo" ref={peerVideo} autoPlay />
       <video id="localVideo" ref={localVideo} autoPlay muted />
       <div className="video-control">
         <button
           key="btnVideo"
           type="button"
-          className={getButtonClass('fa-video-camera', video)}
-          onClick={() => toggleMediaDevice('video')}
+          className={getButtonClass("fa-video-camera", video)}
+          onClick={() => toggleMediaDevice("video")}
         />
         <button
           key="btnAudio"
           type="button"
-          className={getButtonClass('fa-microphone', audio)}
-          onClick={() => toggleMediaDevice('audio')}
+          className={getButtonClass("fa-microphone", audio)}
+          onClick={() => toggleMediaDevice("audio")}
         />
         <button
           type="button"
