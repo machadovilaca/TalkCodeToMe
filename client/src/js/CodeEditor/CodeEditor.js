@@ -14,7 +14,7 @@ class CodeEditor extends React.Component {
     this.inputchange = this.props.inputchange.bind(this)
     this.openFile = this.openFile.bind(this)
   }
-  
+
   componentDidMount(){
     this.state.socket
       .on("file", (data) => {
@@ -62,7 +62,7 @@ class CodeEditor extends React.Component {
       <div>
         <div>
           <button type="file" onClick={this.openFile}>Open</button>
-          <button onClick={(e) => this.saveFile(e)}>Save</button>
+          {this.state.blob ? <button onClick={(e) => this.saveFile(e)}>Save</button> : "" }
         </div>
         <div>
           <Editor
