@@ -5,21 +5,30 @@ import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 import "./CodeEditor.css";
 import {fileOpen, fileSave} from "browser-fs-access"
+import CanvasDraw from "react-canvas-draw"
 
 class CodeEditor extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { code: "", name: "" , socket: props.socket, filename: "", blob: null};
+    this.state = { code: "", name: "" , socket: props.socket, filename: "", blob: null, canvas: ""};
 
     this.inputchange = this.props.inputchange.bind(this)
+    this.canvasinputchange = this.props.canvasinputchange.bind(this)
+
     this.openFile = this.openFile.bind(this)
+    this.updateCanvas = this.updateCanvas.bind(this)
   }
 
   componentDidMount(){
     this.state.socket
       .on("file", (data) => {
         this.setState({ code: data.data });
-    })
+      })
+      .on("canvas", (data) => {
+        this.setState({
+          canvas: data.data
+        })
+      })
   }
 
   async openFile() {
@@ -57,12 +66,33 @@ class CodeEditor extends React.Component {
     this.inputchange(code)
   }
 
+  updateCanvas(canvas) {
+    this.setState({
+      canvas: canvas.getSaveData()
+    })
+    this.canvasinputchange(canvas.getSaveData())
+  }
+
+  loadCanvas(event) {
+    console.log("reloading canvas")
+    event.loadSaveData(this.state.canvas, true)
+  }
+
   render() {
     return (
       <div>
         <div>
           <button type="file" onClick={this.openFile}>Open</button>
           {this.state.blob ? <button onClick={(e) => this.saveFile(e)}>Save</button> : "" }
+        </div>
+        <div>
+          <CanvasDraw gridColor="rgba(255,255,255,0)"
+            onLoad={(event) => (this.loadCanvas(event))}
+            onChange={this.updateCanvas}
+            hideGrid={true} 
+            canvasWidth={400} 
+            canvasHeight={400} 
+            brushRadius={2} />
         </div>
         <div>
           <Editor

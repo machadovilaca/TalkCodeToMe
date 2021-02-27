@@ -17,7 +17,6 @@ class App extends Component {
       callFrom: "",
       localSrc: null,
       peerSrc: null,
-      code: ""
     };
     this.friendID = null;
     this.pc = {};
@@ -26,6 +25,7 @@ class App extends Component {
     this.endCallHandler = this.endCall.bind(this);
     this.rejectCallHandler = this.rejectCall.bind(this);
     this.writeFile = this.writeFile.bind(this);
+    this.writeCanvas = this.writeCanvas.bind(this);
   }
 
   componentDidMount() {
@@ -64,6 +64,10 @@ class App extends Component {
     socket.emit("file", { to: this.friendID, data });
   }
 
+  writeCanvas(data) {
+    socket.emit("canvas", {to: this.friendID, data});
+  }
+
   rejectCall() {
     const { callFrom } = this.state;
     socket.emit("end", { to: callFrom });
@@ -94,8 +98,9 @@ class App extends Component {
       peerSrc,
     } = this.state;
     return (
+      <div>
         <MainWindow clientId={clientId} startCall={this.startCallHandler} />
-        /*{!_.isEmpty(this.config) && (
+        {!_.isEmpty(this.config) && (
           <CallWindow
             status={callWindow}
             localSrc={localSrc}
@@ -104,6 +109,7 @@ class App extends Component {
             mediaDevice={this.pc.mediaDevice}
             endCall={this.endCallHandler}
             writeFile={this.writeFile}
+            writeCanvas={this.writeCanvas}
             socket={socket}
           />
         )}
@@ -112,7 +118,8 @@ class App extends Component {
           startCall={this.startCallHandler}
           rejectCall={this.rejectCallHandler}
           callFrom={callFrom}
-        />*/
+        />
+      </div>
     );
   }
 }

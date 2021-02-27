@@ -32,6 +32,12 @@ function initSocket(socket) {
         receiver.emit("file", data);
       }
     })
+    .on("canvas", (data) => {
+      const receiver = users.get(data.to);
+      if (receiver) {
+        receiver.emit("canvas", data);
+      }
+    })
     .on("end", (data) => {
       const receiver = users.get(data.to);
       if (receiver) {
