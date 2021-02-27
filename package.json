@@ -16,6 +16,7 @@
     "babel-loader": "8.1.0",
     "bluebird": "3.7.2",
     "bootstrap-sass": "3.4.1",
+    "browser-fs-access": "^0.14.0",
     "classnames": "2.2.6",
     "css-loader": "5.0.0",
     "expose-loader": "1.0.1",
@@ -41,7 +42,7 @@
     "style-loader": "2.0.0",
     "terser-webpack-plugin": "5.0.3",
     "webpack": "5.3.2",
-    "webpack-cli": "4.1.0",
+    "webpack-cli": "^4.5.0",
     "webrtc-adapter": "7.7.0"
   },
   "devDependencies": {
