@@ -9,7 +9,15 @@ import FileSaver, { saveAs } from "file-saver";
 class CodeEditor extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { code: "", name: "" };
+    this.state = { code: "", name: "" , socket: props.socket};
+    this.inputchange = this.props.inputchange.bind(this)
+  }
+  
+  componentDidMount(){
+    this.state.socket
+      .on("file", (data) => {
+        this.setState({ code: data.data });
+    })
   }
 
   openFile(e) {
@@ -19,6 +27,7 @@ class CodeEditor extends React.Component {
       this.setState({
         code: e.target.result,
       });
+      this.inputchange(e.target.result)
     };
     this.setState({
       filename: e.target.files[0].name,
@@ -34,6 +43,13 @@ class CodeEditor extends React.Component {
     FileSaver.saveAs(blob, this.state.filename);
   }
 
+  updateEditor(code) {
+    this.setState({
+      code: code
+    })
+    this.inputchange(code)
+  }
+
   render() {
     return (
       <div>
@@ -44,7 +60,7 @@ class CodeEditor extends React.Component {
         <div>
           <Editor
             value={this.state.code}
-            onValueChange={(code) => this.setState({ code })}
+            onValueChange={(code) => this.updateEditor( code )}
             highlight={(code) => highlight(code, languages.js)}
             padding={10}
             style={{
