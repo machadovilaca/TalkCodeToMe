@@ -20,7 +20,7 @@
     position: absolute;
     z-index: -1;
     height: 150vh;
-    width: 100vw;
+    width: 150vw;
   }
 
   .line-1 {
@@ -88,25 +88,26 @@
     line-height: $height;
     text-align: center;
     border-radius: 50%;
-    border: solid 2px $main-color;
+    border: solid 2px $white;
     cursor: pointer;
     transition-duration: 0.25s;
-    background-color: transparent;
+	background-color: transparent;
+	color: $white;
 
     &:hover {
-      background-color: rgba($main-color, 0.2);
+      background-color: rgba($white, 0.2);
     }
   }
 
   .txt-clientId {
     height: 40px;
     margin: 40px auto 0px 10px;
-    color: $main-color;
+    color: $white;
     font-size: 0.9em;
     background-color: transparent;
     border: none;
-    border-bottom: solid 1px $main-color;
-    @include input-placeholder(rgba($main-color, 0.8));
+    border-bottom: solid 1px $white;
+    @include input-placeholder(rgba($white, 0.8));
   }
 
   .icons {

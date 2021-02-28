@@ -1,46 +1,59 @@
 .call-modal {
-	position: absolute;
-	width: 400px;
-	padding: 20px;
-	left: calc(50vw - 200px);
-	top: 10%;
-	@include bg-gradient(top, #e0e1e2 60%, #030D10 150%);
-	@include border-radius(5px);
-	text-align: center;
-	display: none;
+  position: absolute;
+  width: 400px;
+  padding: 20px;
+  left: calc(50vw - 200px);
+  top: 10%;
+  @include border-radius(5px);
+  text-align: center;
+  display: none;
 
-	&.active {
-		display: block;
-		z-index: 9999;
-		@include animation(blinking 3s infinite linear);
-	}
+  &.active {
+    display: block;
+    z-index: 9999;
+    @include animation(blinking 3s infinite linear);
+  }
 
-	.btn-action:not(.hangup) {
-		background-color: $green;
-	}
+  .btn-action:not(.hangup) {
+    border: solid 2px $green;
+    background-color: transparent;
+    color: $green;
 
-	span.caller {
-		color: #383838;
-		margin: 0 0 1em;
-		line-height: 1.4285em;
-		margin: 0 0 1em;
-		font-size: 20px;
-		font-weight: 900;
-		font-stretch: normal;
-		font-style: normal;
-		line-height: 1;
-		letter-spacing: normal;
-		line-height: 1.4285em;
-	}
+    &:hover {
+      background-color: rgba($green, 0.2);
+    }
+  }
 
-	p {
-		font-size: 1.5em;
-	}
+  span.caller {
+    color: $white;
+    margin: 0 0 1em;
+    line-height: 1.4285em;
+    margin: 0 0 1em;
+    font-size: 20px;
+    font-weight: 900;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: normal;
+    line-height: 1.4285em;
+  }
+
+  p {
+    font-size: 1.5em;
+  }
 }
 
 @include keyframes(blinking) {
-	25% {@include transform(scale(0.96))}
-	50% {@include transform(scale(1))}
-	75% {@include transform(scale(0.96))}
-	100% {@include transform(scale(1))}
+  25% {
+    @include transform(scale(0.96));
+  }
+  50% {
+    @include transform(scale(1));
+  }
+  75% {
+    @include transform(scale(0.96));
+  }
+  100% {
+    @include transform(scale(1));
+  }
 }

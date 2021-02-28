@@ -27,6 +27,8 @@ class App extends Component {
     this.rejectCallHandler = this.rejectCall.bind(this);
     this.writeFile = this.writeFile.bind(this);
     this.writeCanvas = this.writeCanvas.bind(this);
+    this.audio = new Audio("client/src/sounds/skype.mp3");
+    this.audio.load()
   }
 
   componentDidMount() {
@@ -37,6 +39,7 @@ class App extends Component {
       })
       .on("request", ({ from: callFrom }) => {
         this.setState({ callModal: "active", callFrom });
+        this.audio.play();
       })
       .on("call", (data) => {
         if (data.sdp) {
@@ -56,6 +59,7 @@ class App extends Component {
         const newState = { callWindow: "active", localSrc: src };
         if (!isCaller) newState.callModal = "";
         this.setState(newState);
+        this.audio.pause();
       })
       .on("peerStream", (src) => this.setState({ peerSrc: src }))
       .start(isCaller, config);
@@ -73,6 +77,7 @@ class App extends Component {
     const { callFrom } = this.state;
     socket.emit("end", { to: callFrom });
     this.setState({ callModal: "" });
+    this.audio.pause();
   }
 
   endCall(isStarter) {
@@ -99,7 +104,7 @@ class App extends Component {
       peerSrc,
     } = this.state;
     return (
-      <div>
+      <div className="main-container">
         {!_.isEmpty(this.config) ? (
           <CallWindow
             status={callWindow}

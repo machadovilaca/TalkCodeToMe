@@ -4,10 +4,10 @@ import AceEditor from "react-ace";
 import "ace-builds/src-min-noconflict/ext-language_tools";
 import "ace-builds/src-noconflict/snippets/javascript";
 
-import "./CodeEditor.css";
 import { fileOpen, fileSave } from "browser-fs-access";
 import CanvasDraw from "react-canvas-draw";
-import { Dropdown } from "semantic-ui-react";
+import { GithubPicker } from "react-color";
+import { Button, Checkbox, Form, Select} from "semantic-ui-react";
 
 const languages = [
   "javascript",
@@ -28,6 +28,10 @@ const languages = [
   "css"
 ];
 
+const languages_map = languages.map(lang => (
+  {key: lang, value: lang, text: lang}))
+
+console.log(languages_map)
 
 languages.forEach(lang => {
   require(`ace-builds/src-noconflict/mode-${lang}`);
@@ -47,7 +51,12 @@ const themes = [
   "terminal"
 ];
 
+const themes_map = themes.map(lang => (
+  {key: lang, value: lang, text: lang}))
+
+
 themes.forEach(theme => require(`ace-builds/src-noconflict/theme-${theme}`));
+
 
 function CodeEditor(props) {
   const [code, setCode] = useState("");
@@ -56,6 +65,8 @@ function CodeEditor(props) {
   const [useCanvas, setUseCanvas] = useState(true);
   const clientId = props.clientId;
   const canvasRef = useRef(null);
+  const [canvasColor, setCanvasColor] = useState("#ffffff");
+  const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [canvasData, setCanvasData] = useState({
     data: null,
     userChange: false,
@@ -79,6 +90,10 @@ function CodeEditor(props) {
   useEffect(() => {
     if (canvasData.userChange) {
       canvasRef.current.loadSaveData(canvasData.data, true);
+
+      if (JSON.parse(canvasData.data).lines.length === 0) {
+        setCanvasData({ userChange: false });
+      }
     }
   }, [canvasData.userChange]);
 
@@ -105,6 +120,7 @@ function CodeEditor(props) {
   };
 
   const updateEditor = (codeUpdate) => {
+    setCode(codeUpdate);
     props.inputchange(codeUpdate);
   };
 
@@ -122,55 +138,89 @@ function CodeEditor(props) {
     }
   };
 
+  const cleanCanvas = () => {
+    canvasRef.current.clear();
+    updateCanvas(canvasRef.current);
+  };
+
   const changeTop = () => {
     setUseCanvas(!useCanvas);
+  };
+
+  const changeCanvasColor = (color) => {
+    setCanvasColor(color.hex);
+    setDisplayColorPicker(false);
+  };
+
+  const handleClick = () => {
+    setDisplayColorPicker(!displayColorPicker);
+  };
+
+  const handleClose = () => {
+    setDisplayColorPicker(false);
+  };
+
+  const popover = {
+    position: "absolute",
+    zIndex: "20",
+  };
+
+  const cover = {
+    position: "fixed",
+    top: "0px",
+    right: "0px",
+    bottom: "0px",
+    left: "0px",
   };
 
   return (
     <div>
       <div className="buttons">
-        <button type="file" onClick={openFile}>
-          Edit file
-        </button>
-        {blob ? (
+        {blob ? <Button onClick={(e) => saveFile(e)}>Save file</Button> : ""}
+        <Button type="file" onClick={openFile}>
+          Select file
+        </Button>
+        {blob ? <Button onClick={(e) => closeFile()}>Close file</Button> : ""}
+      </div>
+      <div className="buttons">
+        {code ? (
           <>
-            <button onClick={(e) => saveFile(e)}>Save</button>
-            <button onClick={(e) => closeFile()}>Close</button>
+            <Button onClick={(e) => changeTop()}>
+              {useCanvas ? "Write code" : "Draw"}
+            </Button>
+            <Button onClick={(e) => cleanCanvas()}>Clear drawings</Button>
+            <div>
+              <Button onClick={handleClick}>Pick Color</Button>
+              {displayColorPicker ? (
+                <div style={popover}>
+                  <div style={cover} onClick={handleClose} />
+                  <GithubPicker
+                    color={canvasColor}
+                    onChangeComplete={changeCanvasColor}
+                  />
+                </div>
+              ) : null}
+            </div>
           </>
         ) : (
             <button onClick={(e) => saveFile(e)}>Create File</button>
         )}
-        {code ? (
-          <button onClick={(e) => changeTop()}>
-            {useCanvas ? "Use code" : "Use canvas"}
-          </button>
-        ) : (
-          ""
-        )}
       </div>
       <div>
-        <select
-          onChange={(e) => {setMode(e.target.value)}}
+        <Select
+          onChange={(e, d) => {setMode(d.value)}}
           value={mode}
-        >
-          {languages.map(lang => (
-            <option key={lang} value={lang}>
-              {lang}
-            </option>
-          ))}
-        </select>
+      
+          options={languages_map}
+        />
       </div>
       <div>
-      <select
-          onChange={(e) => {setTheme(e.target.value)}}
+      <Select
+          onChange={(e, d) => {setTheme(d.value)}}
           value={theme}
-      >
-        {themes.map(lang => (
-          <option key={lang} value={lang}>
-            {lang}
-          </option>
-        ))}
-      </select>
+      
+          options={themes_map}
+        />
       </div>
       <div className="iteractive">
         {code ? (
@@ -183,7 +233,8 @@ function CodeEditor(props) {
               hideGrid={true}
               canvasWidth={1200}
               canvasHeight={600}
-              brushRadius={2}
+              brushRadius={3}
+              brushColor={canvasColor}
             />
           </div>
         ) : (
