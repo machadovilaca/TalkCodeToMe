@@ -27,7 +27,7 @@ class App extends Component {
     this.rejectCallHandler = this.rejectCall.bind(this);
     this.writeFile = this.writeFile.bind(this);
     this.writeCanvas = this.writeCanvas.bind(this);
-    this.audio = new Audio("client/src/sounds/skype.mp3");
+    this.audio = new Audio("client/src/sounds/talk_code_to_me.mp3");
     this.audio.load()
   }
 
