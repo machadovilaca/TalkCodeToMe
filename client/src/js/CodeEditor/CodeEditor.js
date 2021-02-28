@@ -1,14 +1,53 @@
 import React, { useEffect, useState, useRef } from "react";
 import AceEditor from "react-ace";
 
-import "ace-builds/src-noconflict/mode-javascript";
-import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-min-noconflict/ext-language_tools";
 import "ace-builds/src-noconflict/snippets/javascript";
 
 import "./CodeEditor.css";
 import { fileOpen, fileSave } from "browser-fs-access";
 import CanvasDraw from "react-canvas-draw";
+import { Dropdown } from "semantic-ui-react";
+
+const languages = [
+  "javascript",
+  "java",
+  "python",
+  "xml",
+  "ruby",
+  "sass",
+  "markdown",
+  "mysql",
+  "json",
+  "html",
+  "handlebars",
+  "golang",
+  "csharp",
+  "elixir",
+  "typescript",
+  "css"
+];
+
+
+languages.forEach(lang => {
+  require(`ace-builds/src-noconflict/mode-${lang}`);
+  require(`ace-builds/src-noconflict/snippets/${lang}`);
+});
+
+const themes = [
+  "monokai",
+  "github",
+  "tomorrow",
+  "kuroir",
+  "twilight",
+  "xcode",
+  "textmate",
+  "solarized_dark",
+  "solarized_light",
+  "terminal"
+];
+
+themes.forEach(theme => require(`ace-builds/src-noconflict/theme-${theme}`));
 
 function CodeEditor(props) {
   const [code, setCode] = useState("");
@@ -21,6 +60,11 @@ function CodeEditor(props) {
     data: null,
     userChange: false,
   });
+  const [mode, setMode] = useState("javascript")
+  const [theme, setTheme] = useState("monokai")
+
+
+
 
   socket
     .on("file", (data) => {
@@ -94,7 +138,7 @@ function CodeEditor(props) {
             <button onClick={(e) => closeFile()}>Close</button>
           </>
         ) : (
-          ""
+            <button onClick={(e) => saveFile(e)}>Create File</button>
         )}
         {code ? (
           <button onClick={(e) => changeTop()}>
@@ -103,6 +147,30 @@ function CodeEditor(props) {
         ) : (
           ""
         )}
+      </div>
+      <div>
+        <select
+          onChange={(e) => {setMode(e.target.value)}}
+          value={mode}
+        >
+          {languages.map(lang => (
+            <option key={lang} value={lang}>
+              {lang}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div>
+      <select
+          onChange={(e) => {setTheme(e.target.value)}}
+          value={theme}
+      >
+        {themes.map(lang => (
+          <option key={lang} value={lang}>
+            {lang}
+          </option>
+        ))}
+      </select>
       </div>
       <div className="iteractive">
         {code ? (
@@ -123,8 +191,8 @@ function CodeEditor(props) {
         )}
         <div className={"code-editor" + (useCanvas ? "" : " top")}>
           <AceEditor
-            mode="javascript"
-            theme="monokai"
+            mode={mode}
+            theme={theme}
             onChange={updateEditor}
             fontSize={18}
             showPrintMargin={false}
