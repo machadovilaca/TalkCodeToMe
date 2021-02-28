@@ -34,8 +34,6 @@ const languages_map = languages.map((lang) => ({
   text: lang,
 }));
 
-console.log(languages_map);
-
 languages.forEach((lang) => {
   require(`ace-builds/src-noconflict/mode-${lang}`);
   require(`ace-builds/src-noconflict/snippets/${lang}`);

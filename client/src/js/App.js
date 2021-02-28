@@ -29,7 +29,8 @@ class App extends Component {
     this.writeFile = this.writeFile.bind(this);
     this.writeCanvas = this.writeCanvas.bind(this);
     this.audio = new Audio("https://media1.vocaroo.com/mp3/19uEcelROuXN");
-    this.audio.load()
+    this.audio.loop = true;
+    this.audio.load();
   }
 
   componentDidMount() {

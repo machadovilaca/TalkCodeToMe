@@ -18,9 +18,9 @@ function MainWindow({ startCall, clientId }) {
   return (
     <div className="container main-window">
       <Background className="background" />
-      <h1 className="line-1 anim-typewriter">Talk Code To Me</h1>
-      <p className="description">Free calls with code sharing</p>
-      <div className="userid">
+      <h1 className="line-1 anim-typewriter home-content">Talk Code To Me</h1>
+      <p className="description home-content">Free calls with code sharing</p>
+      <div className="userid home-content">
         <button
           className="compact ui button copy"
           onClick={() => navigator.clipboard.writeText(clientId)}
@@ -31,7 +31,7 @@ function MainWindow({ startCall, clientId }) {
           <span className="id">{clientId}</span>, who do you wanna talk to?
         </p>
       </div>
-      <div>
+      <div className="home-content">
         <div className="ui middle aligned center aligned grid">
           <Form className="ui big form">
             <Form.Field>
