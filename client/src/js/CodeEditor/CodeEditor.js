@@ -9,6 +9,7 @@ import "ace-builds/src-noconflict/snippets/javascript";
 import "./CodeEditor.css";
 import { fileOpen, fileSave } from "browser-fs-access";
 import CanvasDraw from "react-canvas-draw";
+import { GithubPicker } from "react-color";
 
 function CodeEditor(props) {
   const [code, setCode] = useState("");
@@ -17,6 +18,8 @@ function CodeEditor(props) {
   const [useCanvas, setUseCanvas] = useState(true);
   const clientId = props.clientId;
   const canvasRef = useRef(null);
+  const [canvasColor, setCanvasColor] = useState("#ffffff");
+  const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [canvasData, setCanvasData] = useState({
     data: null,
     userChange: false,
@@ -35,6 +38,10 @@ function CodeEditor(props) {
   useEffect(() => {
     if (canvasData.userChange) {
       canvasRef.current.loadSaveData(canvasData.data, true);
+
+      if (JSON.parse(canvasData.data).lines.length === 0) {
+        setCanvasData({ userChange: false });
+      }
     }
   }, [canvasData.userChange]);
 
@@ -61,6 +68,7 @@ function CodeEditor(props) {
   };
 
   const updateEditor = (codeUpdate) => {
+    setCode(codeUpdate);
     props.inputchange(codeUpdate);
   };
 
@@ -78,28 +86,70 @@ function CodeEditor(props) {
     }
   };
 
+  const cleanCanvas = () => {
+    canvasRef.current.clear();
+    updateCanvas(canvasRef.current);
+  };
+
   const changeTop = () => {
     setUseCanvas(!useCanvas);
+  };
+
+  const changeCanvasColor = (color) => {
+    setCanvasColor(color.hex);
+    setDisplayColorPicker(false);
+  };
+
+  const handleClick = () => {
+    setDisplayColorPicker(!displayColorPicker);
+  };
+
+  const handleClose = () => {
+    setDisplayColorPicker(false);
+  };
+
+  const popover = {
+    position: "absolute",
+    zIndex: "20",
+  };
+
+  const cover = {
+    position: "fixed",
+    top: "0px",
+    right: "0px",
+    bottom: "0px",
+    left: "0px",
   };
 
   return (
     <div>
       <div className="buttons">
+        {blob ? <button onClick={(e) => saveFile(e)}>Save file</button> : ""}
         <button type="file" onClick={openFile}>
-          Edit file
+          Select file
         </button>
-        {blob ? (
-          <>
-            <button onClick={(e) => saveFile(e)}>Save</button>
-            <button onClick={(e) => closeFile()}>Close</button>
-          </>
-        ) : (
-          ""
-        )}
+        {blob ? <button onClick={(e) => closeFile()}>Close file</button> : ""}
+      </div>
+      <div className="buttons">
         {code ? (
-          <button onClick={(e) => changeTop()}>
-            {useCanvas ? "Use code" : "Use canvas"}
-          </button>
+          <>
+            <button onClick={(e) => changeTop()}>
+              {useCanvas ? "Write code" : "Draw"}
+            </button>
+            <button onClick={(e) => cleanCanvas()}>Clear drawings</button>
+            <div>
+              <button onClick={handleClick}>Pick Color</button>
+              {displayColorPicker ? (
+                <div style={popover}>
+                  <div style={cover} onClick={handleClose} />
+                  <GithubPicker
+                    color={canvasColor}
+                    onChangeComplete={changeCanvasColor}
+                  />
+                </div>
+              ) : null}
+            </div>
+          </>
         ) : (
           ""
         )}
@@ -115,7 +165,8 @@ function CodeEditor(props) {
               hideGrid={true}
               canvasWidth={1200}
               canvasHeight={600}
-              brushRadius={2}
+              brushRadius={3}
+              brushColor={canvasColor}
             />
           </div>
         ) : (

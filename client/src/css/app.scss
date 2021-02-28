@@ -99,10 +99,14 @@ body {
   display: flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
-	justify-content: space-around;
+	justify-content: flex-start;
 	align-items: flex-start;
-	align-content: center;
+	align-content: flex-start;
 
   width: 25vw;
   margin-bottom: 20px;
+
+  button {
+    margin-left: 10px;
+  }
 }
