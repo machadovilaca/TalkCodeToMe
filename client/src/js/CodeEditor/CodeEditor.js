@@ -116,8 +116,18 @@ function CodeEditor(props) {
     var newBlob = new Blob([code], {
       type: "text/plain",
     });
-    const handle = blob.handle;
-    fileSave(newBlob, {}, handle);
+    var handle;
+    if (blob){
+      handle=blob.handle
+    }
+    else{
+      handle=newBlob.handle
+    }
+    fileSave(newBlob, {}, handle)
+      .then((e) => {
+        newBlob.handle = e
+        setBlob(newBlob)
+      })
   };
 
   const updateEditor = (codeUpdate) => {
