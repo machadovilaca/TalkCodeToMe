@@ -10,6 +10,7 @@ import "./CodeEditor.css";
 import { fileOpen, fileSave } from "browser-fs-access";
 import CanvasDraw from "react-canvas-draw";
 import { GithubPicker } from "react-color";
+import { Button, Checkbox, Form } from "semantic-ui-react";
 
 function CodeEditor(props) {
   const [code, setCode] = useState("");
@@ -124,21 +125,21 @@ function CodeEditor(props) {
   return (
     <div>
       <div className="buttons">
-        {blob ? <button onClick={(e) => saveFile(e)}>Save file</button> : ""}
-        <button type="file" onClick={openFile}>
+        {blob ? <Button onClick={(e) => saveFile(e)}>Save file</Button> : ""}
+        <Button type="file" onClick={openFile}>
           Select file
-        </button>
-        {blob ? <button onClick={(e) => closeFile()}>Close file</button> : ""}
+        </Button>
+        {blob ? <Button onClick={(e) => closeFile()}>Close file</Button> : ""}
       </div>
       <div className="buttons">
         {code ? (
           <>
-            <button onClick={(e) => changeTop()}>
+            <Button onClick={(e) => changeTop()}>
               {useCanvas ? "Write code" : "Draw"}
-            </button>
-            <button onClick={(e) => cleanCanvas()}>Clear drawings</button>
+            </Button>
+            <Button onClick={(e) => cleanCanvas()}>Clear drawings</Button>
             <div>
-              <button onClick={handleClick}>Pick Color</button>
+              <Button onClick={handleClick}>Pick Color</Button>
               {displayColorPicker ? (
                 <div style={popover}>
                   <div style={cover} onClick={handleClose} />

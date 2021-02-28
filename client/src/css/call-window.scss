@@ -82,15 +82,33 @@
     }
 
     &.hangup {
-      background-color: $red;
+      border: solid 2px $red;
+      background-color: transparent;
+      color: $red;
       @include transform(rotate(135deg));
+
+      &:hover {
+        background-color: rgba($red, 0.2);
+      }
     }
 
     &:not(.hangup) {
-      background-color: $blue;
+      border: solid 2px $blue;
+      background-color: transparent;
+      color: $blue;
+
+      &:hover {
+        background-color: rgba($blue, 0.2);
+      }
 
       &.disable {
-        background-color: $red;
+        border: solid 2px $red;
+        background-color: transparent;
+		color: $red;
+		
+		&:hover {
+			background-color: rgba($red, 0.2);
+		  }
       }
     }
   }

@@ -15,6 +15,7 @@ body {
   //background: rgba(#000000, 0.6);
   padding: 0px 20px 20px 20px;
   min-height: 100vh;
+  background-color: $background;
 }
 
 .navbar-brand {
@@ -46,6 +47,7 @@ body {
 
 #root {
   height: 100vh;
+  width: 100vw;
 }
 
 .container {
@@ -59,16 +61,17 @@ body {
 }
 
 .main-container {
-  overflow: hidden;
   height: 100vh;
 }
 
 .peerVideo {
   width: 100%;
+  border-radius: 25px;
 }
 
 .localVideo {
   width: 100%;
+  border-radius: 25px;
 }
 
 .layout {
