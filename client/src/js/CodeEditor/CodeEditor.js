@@ -171,7 +171,7 @@ function CodeEditor(props) {
 
   const popover = {
     position: "absolute",
-    zIndex: "20",
+    zIndex: "50",
   };
 
   const cover = {

@@ -101,11 +101,11 @@ body {
 
 .buttons {
   display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	justify-content: flex-start;
-	align-items: flex-start;
-	align-content: flex-start;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
 
   width: 30vw;
   margin-bottom: 20px;
@@ -121,13 +121,11 @@ body {
 }
 
 .logo {
-  height: 9%;
-    margin-top: 25px;
-    margin-left: 5px;
-}
-
-.github-picker {
-  z-index: 40;
+  height: 80px;
+  margin-top: 25px;
+  margin-left: 5px;
+  z-index: 20;
+  position: relative;
 }
 
 .home-content {
