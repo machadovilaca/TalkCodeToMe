@@ -104,11 +104,11 @@
       &.disable {
         border: solid 2px $red;
         background-color: transparent;
-		color: $red;
-		
-		&:hover {
-			background-color: rgba($red, 0.2);
-		  }
+        color: $red;
+
+        &:hover {
+          background-color: rgba($red, 0.2);
+        }
       }
     }
   }
