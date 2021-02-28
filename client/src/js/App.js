@@ -5,7 +5,8 @@ import PeerConnection from './PeerConnection';
 import MainWindow from './MainWindow';
 import CallWindow from './CallWindow';
 import CallModal from './CallModal';
-import 'semantic-ui-css/semantic.min.css'
+import 'semantic-ui-css/semantic.min.css';
+import logo from './logo.png';
 
 class App extends Component {
   constructor() {
@@ -105,6 +106,7 @@ class App extends Component {
     } = this.state;
     return (
       <div className="main-container">
+        <img className="logo" src={logo} />
         {!_.isEmpty(this.config) ? (
           <CallWindow
             status={callWindow}
