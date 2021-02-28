@@ -1,5 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
-import MonacoEditor from "@uiw/react-monacoeditor";
+import AceEditor from "react-ace";
+
+import "ace-builds/src-noconflict/mode-javascript";
+import "ace-builds/src-noconflict/theme-monokai";
+import "ace-builds/src-min-noconflict/ext-language_tools";
+import "ace-builds/src-noconflict/snippets/javascript";
 
 import "./CodeEditor.css";
 import { fileOpen, fileSave } from "browser-fs-access";
@@ -16,30 +21,16 @@ function CodeEditor(props) {
     data: null,
     userChange: false,
   });
-  const [codeData, setCodeData] = useState({
-    data: null,
-    userChange: false,
-  });
-
 
   socket
     .on("file", (data) => {
-      console.log(data, codeData, clientId);
-      if (data.to === clientId) {
-        setCodeData({ data: data.data, userChange: true });
-      }
+      setCode(data.data);
     })
     .on("canvas", (data) => {
       if (data.to === clientId) {
         setCanvasData({ data: data.data, userChange: true });
       }
     });
-
-  useEffect(() => {
-    if (codeData.userChange) {
-      updateEditor(codeData.data);
-    }
-  }, [codeData.userChange]);
 
   useEffect(() => {
     if (canvasData.userChange) {
@@ -70,12 +61,7 @@ function CodeEditor(props) {
   };
 
   const updateEditor = (codeUpdate) => {
-    if (!codeData.userChange) {
-      props.inputchange(codeUpdate);
-    } else {
-      setCodeData({ userChange: false });
-      setCode(codeData.data);
-    }
+    props.inputchange(codeUpdate);
   };
 
   const closeFile = () => {
@@ -136,14 +122,20 @@ function CodeEditor(props) {
           ""
         )}
         <div className={"code-editor" + (useCanvas ? "" : " top")}>
-          <MonacoEditor
-            height="600px"
-            language="javascript"
+          <AceEditor
+            mode="javascript"
+            theme="monokai"
+            onChange={updateEditor}
+            fontSize={18}
+            showPrintMargin={false}
+            showGutter={true}
+            highlightActiveLine={true}
             value={code}
-            onChange={(newValue, e) => updateEditor(newValue)}
-            options={{
-              theme: "vs-dark",
-            }}
+            height="600px"
+            width="1200px"
+            enableBasicAutocompletion={true}
+            enableLiveAutocompletion={true}
+            enableSnippets={true}
           />
         </div>
       </div>
