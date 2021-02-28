@@ -1,10 +1,12 @@
 const _ = require("lodash");
+const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
 
 const sharedConfigs = {
   context: __dirname,
   entry: {
     app: "./src/index.js",
   },
+  plugins: [new MonacoWebpackPlugin()],
   module: {
     rules: [
       {

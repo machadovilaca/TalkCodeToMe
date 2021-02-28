@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
-import Editor from "react-simple-code-editor";
-import { highlight, languages } from "prismjs/components/prism-core";
-import "prismjs/components/prism-clike";
-import "prismjs/components/prism-javascript";
+import MonacoEditor from "@uiw/react-monacoeditor";
+
 import "./CodeEditor.css";
 import { fileOpen, fileSave } from "browser-fs-access";
 import CanvasDraw from "react-canvas-draw";
@@ -18,10 +16,18 @@ function CodeEditor(props) {
     data: null,
     userChange: false,
   });
+  const [codeData, setCodeData] = useState({
+    data: null,
+    userChange: false,
+  });
+
 
   socket
     .on("file", (data) => {
-      setCode(data.data);
+      console.log(data, codeData, clientId);
+      if (data.to === clientId) {
+        setCodeData({ data: data.data, userChange: true });
+      }
     })
     .on("canvas", (data) => {
       if (data.to === clientId) {
@@ -30,15 +36,19 @@ function CodeEditor(props) {
     });
 
   useEffect(() => {
+    if (codeData.userChange) {
+      updateEditor(codeData.data);
+    }
+  }, [codeData.userChange]);
+
+  useEffect(() => {
     if (canvasData.userChange) {
       canvasRef.current.loadSaveData(canvasData.data, true);
     }
   }, [canvasData.userChange]);
 
   const openFile = async () => {
-    const blob = await fileOpen({
-      mimeTypes: ["text/plain"],
-    });
+    const blob = await fileOpen();
 
     const reader = new FileReader();
     reader.onload = async (e) => {
@@ -52,16 +62,20 @@ function CodeEditor(props) {
   };
 
   const saveFile = () => {
-    var blob = new Blob([code], {
+    var newBlob = new Blob([code], {
       type: "text/plain",
     });
     const handle = blob.handle;
-    fileSave(blob, {}, handle);
+    fileSave(newBlob, {}, handle);
   };
 
   const updateEditor = (codeUpdate) => {
-    setCode(codeUpdate);
-    props.inputchange(codeUpdate);
+    if (!codeData.userChange) {
+      props.inputchange(codeUpdate);
+    } else {
+      setCodeData({ userChange: false });
+      setCode(codeData.data);
+    }
   };
 
   const closeFile = () => {
@@ -121,15 +135,14 @@ function CodeEditor(props) {
         ) : (
           ""
         )}
-        <div className={"editor" + (useCanvas ? "" : " top")}>
-          <Editor
+        <div className={"code-editor" + (useCanvas ? "" : " top")}>
+          <MonacoEditor
+            height="600px"
+            language="javascript"
             value={code}
-            onValueChange={(code) => updateEditor(code)}
-            highlight={(code) => highlight(code, languages.js)}
-            padding={10}
-            style={{
-              fontFamily: '"Fira code", "Fira Mono", monospace',
-              fontSize: 16,
+            onChange={(newValue, e) => updateEditor(newValue)}
+            options={{
+              theme: "vs-dark",
             }}
           />
         </div>
