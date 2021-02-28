@@ -7,7 +7,7 @@ import "ace-builds/src-noconflict/snippets/javascript";
 import { fileOpen, fileSave } from "browser-fs-access";
 import CanvasDraw from "react-canvas-draw";
 import { GithubPicker } from "react-color";
-import { Button, Checkbox, Form, Select} from "semantic-ui-react";
+import { Button, Checkbox, Form, Select } from "semantic-ui-react";
 
 const languages = [
   "javascript",
@@ -25,15 +25,18 @@ const languages = [
   "csharp",
   "elixir",
   "typescript",
-  "css"
+  "css",
 ];
 
-const languages_map = languages.map(lang => (
-  {key: lang, value: lang, text: lang}))
+const languages_map = languages.map((lang) => ({
+  key: lang,
+  value: lang,
+  text: lang,
+}));
 
-console.log(languages_map)
+console.log(languages_map);
 
-languages.forEach(lang => {
+languages.forEach((lang) => {
   require(`ace-builds/src-noconflict/mode-${lang}`);
   require(`ace-builds/src-noconflict/snippets/${lang}`);
 });
@@ -48,15 +51,16 @@ const themes = [
   "textmate",
   "solarized_dark",
   "solarized_light",
-  "terminal"
+  "terminal",
 ];
 
-const themes_map = themes.map(lang => (
-  {key: lang, value: lang, text: lang}))
+const themes_map = themes.map((lang) => ({
+  key: lang,
+  value: lang,
+  text: lang,
+}));
 
-
-themes.forEach(theme => require(`ace-builds/src-noconflict/theme-${theme}`));
-
+themes.forEach((theme) => require(`ace-builds/src-noconflict/theme-${theme}`));
 
 function CodeEditor(props) {
   const [code, setCode] = useState("");
@@ -71,11 +75,8 @@ function CodeEditor(props) {
     data: null,
     userChange: false,
   });
-  const [mode, setMode] = useState("javascript")
-  const [theme, setTheme] = useState("monokai")
-
-
-
+  const [mode, setMode] = useState("javascript");
+  const [theme, setTheme] = useState("monokai");
 
   socket
     .on("file", (data) => {
@@ -176,7 +177,11 @@ function CodeEditor(props) {
   return (
     <div>
       <div className="buttons">
-        {blob ? <Button onClick={(e) => saveFile(e)}>Save file</Button> : ""}
+        {blob ? (
+          <Button onClick={(e) => saveFile(e)}>Save file</Button>
+        ) : (
+          <Button onClick={(e) => saveFile(e)}>Create File</Button>
+        )}
         <Button type="file" onClick={openFile}>
           Select file
         </Button>
@@ -203,22 +208,24 @@ function CodeEditor(props) {
             </div>
           </>
         ) : (
-            <button onClick={(e) => saveFile(e)}>Create File</button>
+          ""
         )}
       </div>
-      <div>
+      <div className="buttons">
         <Select
-          onChange={(e, d) => {setMode(d.value)}}
+          id="picker"
+          onChange={(e, d) => {
+            setMode(d.value);
+          }}
           value={mode}
-      
           options={languages_map}
         />
-      </div>
-      <div>
-      <Select
-          onChange={(e, d) => {setTheme(d.value)}}
+        <Select
+          id="picker"
+          onChange={(e, d) => {
+            setTheme(d.value);
+          }}
           value={theme}
-      
           options={themes_map}
         />
       </div>

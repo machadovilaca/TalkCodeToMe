@@ -106,10 +106,15 @@ body {
 	align-items: flex-start;
 	align-content: flex-start;
 
-  width: 25vw;
+  width: 30vw;
   margin-bottom: 20px;
 
   button {
     margin-left: 10px;
   }
+}
+
+#picker {
+  margin-right: 10px;
+  z-index: 30;
 }
